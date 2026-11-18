@@ -1,0 +1,6 @@
+{
+  "name": "Scam SOS",
+  "description": "Emergency first-hour response guide and scam message analyzer for Indian cyber fraud victims.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

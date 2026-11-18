@@ -1,0 +1,132 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedOwner(userId) {
+      return isSignedIn()
+        && request.auth.uid == userId
+        && request.auth.token.email_verified == true;
+    }
+
+    function isValidReportingProfile(data, userId) {
+      return data.keys().hasAll([
+          'ownerId',
+          'consentGranted',
+          'fullName',
+          'phone',
+          'email',
+          'cityState',
+          'bankName',
+          'accountLast4',
+          'scamDateTime',
+          'amountLost',
+          'transactionId',
+          'scammerContact',
+          'shortDescription',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerId',
+          'consentGranted',
+          'fullName',
+          'phone',
+          'email',
+          'cityState',
+          'bankName',
+          'accountLast4',
+          'scamDateTime',
+          'amountLost',
+          'transactionId',
+          'scammerContact',
+          'shortDescription',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.ownerId is string
+        && isValidId(data.ownerId)
+        && data.ownerId == request.auth.uid
+        && data.ownerId == userId
+        && data.consentGranted is bool
+        && data.consentGranted == true
+        && data.fullName is string && data.fullName.size() <= 100
+        && data.phone is string && data.phone.size() <= 20 && data.phone.matches('^[0-9+\\-\\s()]{0,20}$')
+        && data.email is string && data.email.size() <= 120
+        && data.cityState is string && data.cityState.size() <= 100
+        && data.bankName is string && data.bankName.size() <= 80
+        && data.accountLast4 is string && data.accountLast4.size() <= 4 && data.accountLast4.matches('^([0-9]{4})?$')
+        && data.scamDateTime is string && data.scamDateTime.size() <= 60
+        && data.amountLost is string && data.amountLost.size() <= 20 && data.amountLost.matches('^[0-9.,]{0,20}$')
+        && data.transactionId is string && data.transactionId.size() <= 60
+        && data.scammerContact is string && data.scammerContact.size() <= 120
+        && data.shortDescription is string && data.shortDescription.size() <= 500
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    match /users/{userId}/private/{docId} {
+      allow get: if isValidId(userId)
+        && isValidId(docId)
+        && docId == 'reportingProfile'
+        && isVerifiedOwner(userId);
+
+      allow list: if false;
+
+      allow create: if isValidId(userId)
+        && isValidId(docId)
+        && docId == 'reportingProfile'
+        && isVerifiedOwner(userId)
+        && isValidReportingProfile(incoming(), userId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+
+      allow update: if isValidId(userId)
+        && isValidId(docId)
+        && docId == 'reportingProfile'
+        && isVerifiedOwner(userId)
+        && isValidReportingProfile(incoming(), userId)
+        && incoming().ownerId == existing().ownerId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'fullName',
+          'phone',
+          'email',
+          'cityState',
+          'bankName',
+          'accountLast4',
+          'scamDateTime',
+          'amountLost',
+          'transactionId',
+          'scammerContact',
+          'shortDescription',
+          'updatedAt'
+        ]);
+
+      allow delete: if isValidId(userId)
+        && isValidId(docId)
+        && docId == 'reportingProfile'
+        && isVerifiedOwner(userId);
+    }
+  }
+}

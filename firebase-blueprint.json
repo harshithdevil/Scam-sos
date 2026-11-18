@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "ReportingProfile": {
+      "title": "ReportingProfile",
+      "description": "Private, consent-based emergency fraud reporting preparation profile owned by a single verified user. Never stores OTPs, PINs, passwords, CVVs, Aadhaar, PAN, or full account/card numbers.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owning user.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "consentGranted": {
+          "type": "boolean",
+          "description": "Explicit user consent flag required before storing any profile fields."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Victim's optional full name for bank complaint prefill.",
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional phone number for callback.",
+          "maxLength": 20,
+          "pattern": "^[0-9+\\-\\s()]{0,20}$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional contact email.",
+          "maxLength": 120
+        },
+        "cityState": {
+          "type": "string",
+          "description": "Optional city and state.",
+          "maxLength": 100
+        },
+        "bankName": {
+          "type": "string",
+          "description": "Optional bank or wallet provider name.",
+          "maxLength": 80
+        },
+        "accountLast4": {
+          "type": "string",
+          "description": "Last 4 digits of the affected account or card only.",
+          "maxLength": 4,
+          "pattern": "^([0-9]{4})?$"
+        },
+        "scamDateTime": {
+          "type": "string",
+          "description": "Approximate date and time of the incident.",
+          "maxLength": 60
+        },
+        "amountLost": {
+          "type": "string",
+          "description": "Approximate INR amount lost.",
+          "maxLength": 20,
+          "pattern": "^[0-9.,]{0,20}$"
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "UTR or transaction reference ID.",
+          "maxLength": 60
+        },
+        "scammerContact": {
+          "type": "string",
+          "description": "Scammer phone number, UPI ID, or website.",
+          "maxLength": 120
+        },
+        "shortDescription": {
+          "type": "string",
+          "description": "Brief summary of what happened (no OTPs, PINs, CVVs, passwords, Aadhaar, or PAN).",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set at creation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp updated on every modification."
+        }
+      },
+      "required": [
+        "ownerId",
+        "consentGranted",
+        "fullName",
+        "phone",
+        "email",
+        "cityState",
+        "bankName",
+        "accountLast4",
+        "scamDateTime",
+        "amountLost",
+        "transactionId",
+        "scammerContact",
+        "shortDescription",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/private/{docId}": {
+      "schema": {
+        "$ref": "#/entities/ReportingProfile"
+      },
+      "description": "Strictly owner-isolated private reporting profile document (`docId == 'reportingProfile'`). Only readable, writable, and deletable by the verified owner (`request.auth.uid == userId`)."
+    }
+  }
+}
