@@ -42,7 +42,7 @@ Without an API key the checker runs in a labeled **rule-based fallback mode**.
 - [Add anything else that's true.]
 
 ## Demo
-[Link to demo video] · [Live app link]
+[Link to demo video] · [https://scam-sos.ai.studio/]
 
 ## Team
 Cyber shield: [Harshith krishna,Durga<sanjay,monish]. MRTC, Hyderabad.
