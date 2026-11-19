@@ -45,7 +45,9 @@ Without an API key the checker runs in a labeled **rule-based fallback mode**.
 Link to website 🔗[https://scam-sos.ai.studio/]
 
 ## Team
-Cyber shield: [Harshith krishna,Durga<sanjay,monish]. MRTC, Hyderabad.
+Cyber shield: 
+Harshith krishna, Durga, anjay ,monish.
+MRTC, Hyderabad.
 
 ## Disclaimer
 Scam SOS speeds up reporting. It cannot replace your bank or the police. In an emergency, call 1930.
