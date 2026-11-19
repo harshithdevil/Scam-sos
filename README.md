@@ -41,8 +41,9 @@ Without an API key the checker runs in a labeled **rule-based fallback mode**.
 - Request cap is basic, not a hardened abuse control.
 - [Add anything else that's true.]
 
-## Demo
-[Link to demo video] · [https://scam-sos.ai.studio/]
+## prototype 
+(this is not a perfect website)
+Link to website 🔗[https://scam-sos.ai.studio/]
 
 ## Team
 Cyber shield: [Harshith krishna,Durga<sanjay,monish]. MRTC, Hyderabad.
