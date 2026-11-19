@@ -42,7 +42,6 @@ Without an API key the checker runs in a labeled **rule-based fallback mode**.
 - [Add anything else that's true.]
 
 ## prototype 
-(this is not a perfect website)
 Link to website 🔗[https://scam-sos.ai.studio/]
 
 ## Team
