@@ -46,7 +46,7 @@ Link to website 🔗[https://scam-sos.ai.studio/]
 
 ## Team
 Cyber shield: 
-Harshith krishna, Durga, anjay ,monish.
+Harshith krishna, Durga, sanjay ,monish.
 MRTC, Hyderabad.
 
 ## Disclaimer
